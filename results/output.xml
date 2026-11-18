@@ -1,0 +1,985 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.5.1 (Python 3.11.9 on win32)" generated="2026-11-18T10:50:24.778243" rpa="false" schemaversion="5">
+<suite id="s1" name="Attendance Tests" source="C:\Users\HP\student-attendance testing\tests\attendance_tests.robot">
+<kw name="Open Attendance API Session" type="SETUP">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.883738" level="INFO">Creating Session using : alias=attendance_api, url=http://127.0.0.1:5000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>${SESSION_ALIAS}</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-11-18T10:50:24.883738" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2026-11-18T10:50:24.883738" elapsed="0.000000"/>
+</kw>
+<test id="s1-t1" name="TC01 - Add A Valid Student" line="13">
+<kw name="Create Test Student">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.899527" level="INFO">${suffix} = df5779fc94f0404a993cde6d0f32f7cf</msg>
+<var>${suffix}</var>
+<arg>__import__('uuid').uuid4().hex</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.883738" elapsed="0.015789"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.899527" level="INFO">${payload} = {'name': 'Robot Test Student', 'roll_no': 'RF-df5779fc94f0404a993cde6d0f32f7cf'}</msg>
+<var>${payload}</var>
+<arg>name=Robot Test Student</arg>
+<arg>roll_no=RF-${suffix}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.899527" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.899527" level="INFO">POST Request : url=http://127.0.0.1:5000/students 
+ path_url=/students 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '80', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Robot Test Student", "roll_no": "RF-df5779fc94f0404a993cde6d0f32f7cf"}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.899527" level="INFO">POST Response : url=http://127.0.0.1:5000/students 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '85', 'Connection': 'close'} 
+ body={"id":1,"name":"Robot Test Student","roll_no":"RF-df5779fc94f0404a993cde6d0f32f7cf"}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.899527" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.899527" elapsed="0.010863"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.910390" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response.json()}</value>
+<status status="PASS" start="2026-11-18T10:50:24.910390" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:24.911398" level="INFO">${student} = {'id': 1, 'name': 'Robot Test Student', 'roll_no': 'RF-df5779fc94f0404a993cde6d0f32f7cf'}</msg>
+<var>${student}</var>
+<status status="PASS" start="2026-11-18T10:50:24.883738" elapsed="0.027660"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${student}[id] &gt; 0</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.911398" elapsed="0.001435"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.918770" level="INFO">GET Request : url=http://127.0.0.1:5000/students 
+ path_url=/students 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:24.918770" level="INFO">GET Response : url=http://127.0.0.1:5000/students 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '87', 'Connection': 'close'} 
+ body=[{"id":1,"name":"Robot Test Student","roll_no":"RF-df5779fc94f0404a993cde6d0f32f7cf"}]
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.918770" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.912833" elapsed="0.005937"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.919283" elapsed="0.000000"/>
+</kw>
+<kw name="Should Contain" owner="BuiltIn">
+<arg>${response.json()}</arg>
+<arg>${student}</arg>
+<doc>Fails if the `container` does not contain the `item` one or more times.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.919283" elapsed="0.001083"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:24.883738" elapsed="0.036628"/>
+</test>
+<test id="s1-t2" name="TC02 - Reject An Empty Student Name" line="20">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.922292" level="INFO">${payload} = {'name': '', 'roll_no': ''}</msg>
+<var>${payload}</var>
+<arg>name=${EMPTY}</arg>
+<arg>roll_no=${EMPTY}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.921289" elapsed="0.001003"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.925815" level="INFO">POST Request : url=http://127.0.0.1:5000/students 
+ path_url=/students 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '27', 'Content-Type': 'application/json'} 
+ body=b'{"name": "", "roll_no": ""}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.926719" level="INFO">POST Response : url=http://127.0.0.1:5000/students 
+ status=400, reason=BAD REQUEST 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '45', 'Connection': 'close'} 
+ body={"error":"name must be a non-empty string."}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.927167" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.922292" elapsed="0.004875"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>400</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.927167" elapsed="0.001329"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:24.921289" elapsed="0.007207"/>
+</test>
+<test id="s1-t3" name="TC03 - Retrieve An Existing Student" line="25">
+<kw name="Create Test Student">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.931708" level="INFO">${suffix} = 33d2a48a50ea4464bc5cbbe270317f45</msg>
+<var>${suffix}</var>
+<arg>__import__('uuid').uuid4().hex</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.931007" elapsed="0.000701"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.931708" level="INFO">${payload} = {'name': 'Robot Test Student', 'roll_no': 'RF-33d2a48a50ea4464bc5cbbe270317f45'}</msg>
+<var>${payload}</var>
+<arg>name=Robot Test Student</arg>
+<arg>roll_no=RF-${suffix}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.931708" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.935527" level="INFO">POST Request : url=http://127.0.0.1:5000/students 
+ path_url=/students 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '80', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Robot Test Student", "roll_no": "RF-33d2a48a50ea4464bc5cbbe270317f45"}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.935527" level="INFO">POST Response : url=http://127.0.0.1:5000/students 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '85', 'Connection': 'close'} 
+ body={"id":2,"name":"Robot Test Student","roll_no":"RF-33d2a48a50ea4464bc5cbbe270317f45"}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.935527" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.931708" elapsed="0.003819"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.935527" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response.json()}</value>
+<status status="PASS" start="2026-11-18T10:50:24.935527" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:24.935527" level="INFO">${created} = {'id': 2, 'name': 'Robot Test Student', 'roll_no': 'RF-33d2a48a50ea4464bc5cbbe270317f45'}</msg>
+<var>${created}</var>
+<status status="PASS" start="2026-11-18T10:50:24.930502" elapsed="0.005025"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.940960" level="INFO">GET Request : url=http://127.0.0.1:5000/students/2 
+ path_url=/students/2 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:24.940960" level="INFO">GET Response : url=http://127.0.0.1:5000/students/2 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '85', 'Connection': 'close'} 
+ body={"id":2,"name":"Robot Test Student","roll_no":"RF-33d2a48a50ea4464bc5cbbe270317f45"}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.940960" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students/${created}[id]</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.936953" elapsed="0.004007"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.941965" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<arg>${response.json()}[id]</arg>
+<arg>${created}[id]</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.941965" elapsed="0.000996"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response.json()}[name]</arg>
+<arg>${created}[name]</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.942961" elapsed="0.000000"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:24.928496" elapsed="0.015463"/>
+</test>
+<test id="s1-t4" name="TC04 - Return Not Found For An Unknown Student" line="32">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.950141" level="INFO">GET Request : url=http://127.0.0.1:5000/students/987654321 
+ path_url=/students/987654321 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:24.950141" level="INFO">GET Response : url=http://127.0.0.1:5000/students/987654321 
+ status=404, reason=NOT FOUND 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '31', 'Connection': 'close'} 
+ body={"error":"Student not found."}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.950141" level="INFO">${response} = &lt;Response [404]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students/987654321</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.943959" elapsed="0.006182"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>404</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.950879" elapsed="0.000000"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:24.943959" elapsed="0.006920"/>
+</test>
+<test id="s1-t5" name="TC05 - Mark A Student Present" line="36">
+<kw name="Create Test Student">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.951887" level="INFO">${suffix} = c8f4eb6405eb4b659be2b2473dbaa1a3</msg>
+<var>${suffix}</var>
+<arg>__import__('uuid').uuid4().hex</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.951887" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.952887" level="INFO">${payload} = {'name': 'Robot Test Student', 'roll_no': 'RF-c8f4eb6405eb4b659be2b2473dbaa1a3'}</msg>
+<var>${payload}</var>
+<arg>name=Robot Test Student</arg>
+<arg>roll_no=RF-${suffix}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.952887" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.956207" level="INFO">POST Request : url=http://127.0.0.1:5000/students 
+ path_url=/students 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '80', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Robot Test Student", "roll_no": "RF-c8f4eb6405eb4b659be2b2473dbaa1a3"}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.956207" level="INFO">POST Response : url=http://127.0.0.1:5000/students 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '85', 'Connection': 'close'} 
+ body={"id":3,"name":"Robot Test Student","roll_no":"RF-c8f4eb6405eb4b659be2b2473dbaa1a3"}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.956207" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.952887" elapsed="0.003320"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.957242" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response.json()}</value>
+<status status="PASS" start="2026-11-18T10:50:24.957242" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:24.958240" level="INFO">${student} = {'id': 3, 'name': 'Robot Test Student', 'roll_no': 'RF-c8f4eb6405eb4b659be2b2473dbaa1a3'}</msg>
+<var>${student}</var>
+<status status="PASS" start="2026-11-18T10:50:24.951887" elapsed="0.006353"/>
+</kw>
+<kw name="Mark Attendance">
+<kw name="Convert To Integer" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.959240" level="INFO">${integer_student_id} = 3</msg>
+<var>${integer_student_id}</var>
+<arg>${student_id}</arg>
+<doc>Converts the given item to an integer number.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.959240" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.960208" level="INFO">${payload} = {'student_id': 3, 'status': 'Present', 'date': '2026-01-01'}</msg>
+<var>${payload}</var>
+<arg>student_id=${integer_student_id}</arg>
+<arg>status=${status}</arg>
+<arg>date=${attendance_date}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.959240" elapsed="0.000968"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.965588" level="INFO">POST Request : url=http://127.0.0.1:5000/attendance 
+ path_url=/attendance 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '60', 'Content-Type': 'application/json'} 
+ body=b'{"student_id": 3, "status": "Present", "date": "2026-01-01"}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.965588" level="INFO">POST Response : url=http://127.0.0.1:5000/attendance 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '56', 'Connection': 'close'} 
+ body={"date":"2026-01-01","status":"Present","student_id":3}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.965588" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.960208" elapsed="0.005380"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-11-18T10:50:24.965983" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:24.965983" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${student}[id]</arg>
+<arg>Present</arg>
+<arg>2026-01-01</arg>
+<status status="PASS" start="2026-11-18T10:50:24.958240" elapsed="0.007743"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.965983" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<arg>${response.json()}[student_id]</arg>
+<arg>${student}[id]</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.965983" elapsed="0.001006"/>
+</kw>
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${response.json()}[status]</arg>
+<arg>Present</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.966989" elapsed="0.000934"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:24.950879" elapsed="0.017044"/>
+</test>
+<test id="s1-t6" name="TC06 - Reject An Invalid Attendance Status" line="43">
+<kw name="Create Test Student">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.968931" level="INFO">${suffix} = d1ecdfb021714e1aaa43248ff8568c64</msg>
+<var>${suffix}</var>
+<arg>__import__('uuid').uuid4().hex</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.968931" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.968931" level="INFO">${payload} = {'name': 'Robot Test Student', 'roll_no': 'RF-d1ecdfb021714e1aaa43248ff8568c64'}</msg>
+<var>${payload}</var>
+<arg>name=Robot Test Student</arg>
+<arg>roll_no=RF-${suffix}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.968931" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.973873" level="INFO">POST Request : url=http://127.0.0.1:5000/students 
+ path_url=/students 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '80', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Robot Test Student", "roll_no": "RF-d1ecdfb021714e1aaa43248ff8568c64"}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.973873" level="INFO">POST Response : url=http://127.0.0.1:5000/students 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '85', 'Connection': 'close'} 
+ body={"id":4,"name":"Robot Test Student","roll_no":"RF-d1ecdfb021714e1aaa43248ff8568c64"}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.973873" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.968931" elapsed="0.004942"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.973873" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response.json()}</value>
+<status status="PASS" start="2026-11-18T10:50:24.973873" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:24.975302" level="INFO">${student} = {'id': 4, 'name': 'Robot Test Student', 'roll_no': 'RF-d1ecdfb021714e1aaa43248ff8568c64'}</msg>
+<var>${student}</var>
+<status status="PASS" start="2026-11-18T10:50:24.968931" elapsed="0.006371"/>
+</kw>
+<kw name="Convert To Integer" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.976401" level="INFO">${student_id} = 4</msg>
+<var>${student_id}</var>
+<arg>${student}[id]</arg>
+<doc>Converts the given item to an integer number.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.975302" elapsed="0.001099"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.977310" level="INFO">${payload} = {'student_id': 4, 'status': 'Late', 'date': '2026-01-02'}</msg>
+<var>${payload}</var>
+<arg>student_id=${student_id}</arg>
+<arg>status=Late</arg>
+<arg>date=2026-01-02</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.976401" elapsed="0.000909"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.981441" level="INFO">POST Request : url=http://127.0.0.1:5000/attendance 
+ path_url=/attendance 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '57', 'Content-Type': 'application/json'} 
+ body=b'{"student_id": 4, "status": "Late", "date": "2026-01-02"}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.982395" level="INFO">POST Response : url=http://127.0.0.1:5000/attendance 
+ status=400, reason=BAD REQUEST 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '46', 'Connection': 'close'} 
+ body={"error":"status must be Present or Absent."}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.982395" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.977310" elapsed="0.005085"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>400</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.983012" elapsed="0.000000"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:24.967923" elapsed="0.015089"/>
+</test>
+<test id="s1-t7" name="TC07 - Reject Attendance For An Unknown Student" line="50">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.984656" level="INFO">${payload} = {'student_id': 987654321, 'status': 'Present', 'date': '2026-01-03'}</msg>
+<var>${payload}</var>
+<arg>student_id=${987654321}</arg>
+<arg>status=Present</arg>
+<arg>date=2026-01-03</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.984025" elapsed="0.000631"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.984656" level="INFO">POST Request : url=http://127.0.0.1:5000/attendance 
+ path_url=/attendance 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '68', 'Content-Type': 'application/json'} 
+ body=b'{"student_id": 987654321, "status": "Present", "date": "2026-01-03"}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.984656" level="INFO">POST Response : url=http://127.0.0.1:5000/attendance 
+ status=404, reason=NOT FOUND 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '31', 'Connection': 'close'} 
+ body={"error":"Student not found."}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.988539" level="INFO">${response} = &lt;Response [404]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.984656" elapsed="0.003883"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>404</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.988539" elapsed="0.000000"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:24.984025" elapsed="0.005524"/>
+</test>
+<test id="s1-t8" name="TC08 - Calculate The Present Percentage" line="55">
+<kw name="Create Test Student">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.991016" level="INFO">${suffix} = 1ca917b2dbe143cfa4b00a821bb842f1</msg>
+<var>${suffix}</var>
+<arg>__import__('uuid').uuid4().hex</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.991016" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.992449" level="INFO">${payload} = {'name': 'Robot Test Student', 'roll_no': 'RF-1ca917b2dbe143cfa4b00a821bb842f1'}</msg>
+<var>${payload}</var>
+<arg>name=Robot Test Student</arg>
+<arg>roll_no=RF-${suffix}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.991016" elapsed="0.001433"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:24.997201" level="INFO">POST Request : url=http://127.0.0.1:5000/students 
+ path_url=/students 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '80', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Robot Test Student", "roll_no": "RF-1ca917b2dbe143cfa4b00a821bb842f1"}' 
+ </msg>
+<msg time="2026-11-18T10:50:24.997201" level="INFO">POST Response : url=http://127.0.0.1:5000/students 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:24 GMT', 'Content-Type': 'application/json', 'Content-Length': '85', 'Connection': 'close'} 
+ body={"id":5,"name":"Robot Test Student","roll_no":"RF-1ca917b2dbe143cfa4b00a821bb842f1"}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:24.998242" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.992449" elapsed="0.005793"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.998242" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response.json()}</value>
+<status status="PASS" start="2026-11-18T10:50:24.998242" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:24.998242" level="INFO">${student} = {'id': 5, 'name': 'Robot Test Student', 'roll_no': 'RF-1ca917b2dbe143cfa4b00a821bb842f1'}</msg>
+<var>${student}</var>
+<status status="PASS" start="2026-11-18T10:50:24.991016" elapsed="0.007226"/>
+</kw>
+<kw name="Convert To Integer" owner="BuiltIn">
+<msg time="2026-11-18T10:50:24.999278" level="INFO">${student_id} = 5</msg>
+<var>${student_id}</var>
+<arg>${student}[id]</arg>
+<doc>Converts the given item to an integer number.</doc>
+<status status="PASS" start="2026-11-18T10:50:24.999278" elapsed="0.000000"/>
+</kw>
+<kw name="Mark Attendance">
+<kw name="Convert To Integer" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.000020" level="INFO">${integer_student_id} = 5</msg>
+<var>${integer_student_id}</var>
+<arg>${student_id}</arg>
+<doc>Converts the given item to an integer number.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.000020" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.000020" level="INFO">${payload} = {'student_id': 5, 'status': 'Present', 'date': '2026-01-04'}</msg>
+<var>${payload}</var>
+<arg>student_id=${integer_student_id}</arg>
+<arg>status=${status}</arg>
+<arg>date=${attendance_date}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.000020" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.000020" level="INFO">POST Request : url=http://127.0.0.1:5000/attendance 
+ path_url=/attendance 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '60', 'Content-Type': 'application/json'} 
+ body=b'{"student_id": 5, "status": "Present", "date": "2026-01-04"}' 
+ </msg>
+<msg time="2026-11-18T10:50:25.000020" level="INFO">POST Response : url=http://127.0.0.1:5000/attendance 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '56', 'Connection': 'close'} 
+ body={"date":"2026-01-04","status":"Present","student_id":5}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:25.000020" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.000020" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-11-18T10:50:25.000020" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:25.000020" level="INFO">${present} = &lt;Response [201]&gt;</msg>
+<var>${present}</var>
+<arg>${student_id}</arg>
+<arg>Present</arg>
+<arg>2026-01-04</arg>
+<status status="PASS" start="2026-11-18T10:50:25.000020" elapsed="0.000000"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${present}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.000020" elapsed="0.000000"/>
+</kw>
+<kw name="Mark Attendance">
+<kw name="Convert To Integer" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.006761" level="INFO">${integer_student_id} = 5</msg>
+<var>${integer_student_id}</var>
+<arg>${student_id}</arg>
+<doc>Converts the given item to an integer number.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.000020" elapsed="0.006741"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.006761" level="INFO">${payload} = {'student_id': 5, 'status': 'Absent', 'date': '2026-01-05'}</msg>
+<var>${payload}</var>
+<arg>student_id=${integer_student_id}</arg>
+<arg>status=${status}</arg>
+<arg>date=${attendance_date}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.006761" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.011748" level="INFO">POST Request : url=http://127.0.0.1:5000/attendance 
+ path_url=/attendance 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '59', 'Content-Type': 'application/json'} 
+ body=b'{"student_id": 5, "status": "Absent", "date": "2026-01-05"}' 
+ </msg>
+<msg time="2026-11-18T10:50:25.012231" level="INFO">POST Response : url=http://127.0.0.1:5000/attendance 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '55', 'Connection': 'close'} 
+ body={"date":"2026-01-05","status":"Absent","student_id":5}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:25.012231" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.006761" elapsed="0.005470"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-11-18T10:50:25.012231" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:25.012231" level="INFO">${absent} = &lt;Response [201]&gt;</msg>
+<var>${absent}</var>
+<arg>${student_id}</arg>
+<arg>Absent</arg>
+<arg>2026-01-05</arg>
+<status status="PASS" start="2026-11-18T10:50:25.000020" elapsed="0.012211"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${absent}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.014199" elapsed="0.000000"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.017468" level="INFO">GET Request : url=http://127.0.0.1:5000/attendance/5 
+ path_url=/attendance/5 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:25.017468" level="INFO">GET Response : url=http://127.0.0.1:5000/attendance/5 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '113', 'Connection': 'close'} 
+ body=[{"date":"2026-01-04","status":"Present","student_id":5},{"date":"2026-01-05","status":"Absent","student_id":5}]
+ 
+ </msg>
+<msg time="2026-11-18T10:50:25.017468" level="INFO">${records} = &lt;Response [200]&gt;</msg>
+<var>${records}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance/${student_id}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.014199" elapsed="0.003269"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${records}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.017468" elapsed="0.001011"/>
+</kw>
+<kw name="Length Should Be" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.018479" level="INFO">Length is 2.</msg>
+<arg>${records.json()}</arg>
+<arg>2</arg>
+<doc>Verifies that the length of the given item is correct.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.018479" elapsed="0.000000"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.021686" level="INFO">GET Request : url=http://127.0.0.1:5000/attendance/5/percentage 
+ path_url=/attendance/5/percentage 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:25.022688" level="INFO">GET Response : url=http://127.0.0.1:5000/attendance/5/percentage 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '67', 'Connection': 'close'} 
+ body={"percentage":50.0,"present_days":1,"student_id":5,"total_days":2}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:25.022688" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance/${student_id}/percentage</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.019317" elapsed="0.003371"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.022688" elapsed="0.000999"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.023687" level="INFO">Argument types are:
+&lt;class 'float'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.json()}[percentage]</arg>
+<arg>50.0</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.023687" elapsed="0.000000"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:24.989549" elapsed="0.035527"/>
+</test>
+<test id="s1-t9" name="TC09 - Delete A Student And Its Attendance" line="69">
+<kw name="Create Test Student">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.026083" level="INFO">${suffix} = 095fb07abdb745c5b49127e7b0d65187</msg>
+<var>${suffix}</var>
+<arg>__import__('uuid').uuid4().hex</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.026083" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.026083" level="INFO">${payload} = {'name': 'Robot Test Student', 'roll_no': 'RF-095fb07abdb745c5b49127e7b0d65187'}</msg>
+<var>${payload}</var>
+<arg>name=Robot Test Student</arg>
+<arg>roll_no=RF-${suffix}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.026083" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.031592" level="INFO">POST Request : url=http://127.0.0.1:5000/students 
+ path_url=/students 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '80', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Robot Test Student", "roll_no": "RF-095fb07abdb745c5b49127e7b0d65187"}' 
+ </msg>
+<msg time="2026-11-18T10:50:25.031592" level="INFO">POST Response : url=http://127.0.0.1:5000/students 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '85', 'Connection': 'close'} 
+ body={"id":6,"name":"Robot Test Student","roll_no":"RF-095fb07abdb745c5b49127e7b0d65187"}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:25.032345" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.027170" elapsed="0.005175"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${response}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.032345" elapsed="0.000525"/>
+</kw>
+<return>
+<value>${response.json()}</value>
+<status status="PASS" start="2026-11-18T10:50:25.032870" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:25.032870" level="INFO">${student} = {'id': 6, 'name': 'Robot Test Student', 'roll_no': 'RF-095fb07abdb745c5b49127e7b0d65187'}</msg>
+<var>${student}</var>
+<status status="PASS" start="2026-11-18T10:50:25.025076" elapsed="0.007794"/>
+</kw>
+<kw name="Convert To Integer" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.033876" level="INFO">${student_id} = 6</msg>
+<var>${student_id}</var>
+<arg>${student}[id]</arg>
+<doc>Converts the given item to an integer number.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.033876" elapsed="0.000000"/>
+</kw>
+<kw name="Mark Attendance">
+<kw name="Convert To Integer" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.036773" level="INFO">${integer_student_id} = 6</msg>
+<var>${integer_student_id}</var>
+<arg>${student_id}</arg>
+<doc>Converts the given item to an integer number.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.036773" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-11-18T10:50:25.036773" level="INFO">${payload} = {'student_id': 6, 'status': 'Present', 'date': '2026-01-06'}</msg>
+<var>${payload}</var>
+<arg>student_id=${integer_student_id}</arg>
+<arg>status=${status}</arg>
+<arg>date=${attendance_date}</arg>
+<doc>Creates and returns a dictionary based on the given `items`.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.036773" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.083516" level="INFO">POST Request : url=http://127.0.0.1:5000/attendance 
+ path_url=/attendance 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '60', 'Content-Type': 'application/json'} 
+ body=b'{"student_id": 6, "status": "Present", "date": "2026-01-06"}' 
+ </msg>
+<msg time="2026-11-18T10:50:25.083516" level="INFO">POST Response : url=http://127.0.0.1:5000/attendance 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '56', 'Connection': 'close'} 
+ body={"date":"2026-01-06","status":"Present","student_id":6}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:25.083516" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.038784" elapsed="0.044732"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-11-18T10:50:25.083516" elapsed="0.000000"/>
+</return>
+<msg time="2026-11-18T10:50:25.083516" level="INFO">${marked} = &lt;Response [201]&gt;</msg>
+<var>${marked}</var>
+<arg>${student_id}</arg>
+<arg>Present</arg>
+<arg>2026-01-06</arg>
+<status status="PASS" start="2026-11-18T10:50:25.034765" elapsed="0.048751"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${marked}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.092454" elapsed="0.000000"/>
+</kw>
+<kw name="DELETE On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.098488" level="INFO">DELETE Request : url=http://127.0.0.1:5000/students/6 
+ path_url=/students/6 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:25.098488" level="INFO">DELETE Response : url=http://127.0.0.1:5000/students/6 
+ status=204, reason=NO CONTENT 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Connection': 'close'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:25.098488" level="INFO">${deleted} = &lt;Response [204]&gt;</msg>
+<var>${deleted}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students/${student_id}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a DELETE request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.096476" elapsed="0.002012"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>204</arg>
+<arg>${deleted}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.100998" elapsed="0.000000"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.106223" level="INFO">GET Request : url=http://127.0.0.1:5000/students/6 
+ path_url=/students/6 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:25.106223" level="INFO">GET Response : url=http://127.0.0.1:5000/students/6 
+ status=404, reason=NOT FOUND 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '31', 'Connection': 'close'} 
+ body={"error":"Student not found."}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:25.106223" level="INFO">${missing_student} = &lt;Response [404]&gt;</msg>
+<var>${missing_student}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/students/${student_id}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.100998" elapsed="0.005225"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>404</arg>
+<arg>${missing_student}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.107223" elapsed="0.000000"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.111221" level="INFO">GET Request : url=http://127.0.0.1:5000/attendance/6 
+ path_url=/attendance/6 
+ headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-11-18T10:50:25.111221" level="INFO">GET Response : url=http://127.0.0.1:5000/attendance/6 
+ status=404, reason=NOT FOUND 
+ headers={'Server': 'Werkzeug/3.1.9 Python/3.11.9', 'Date': 'Wed, 18 Nov 2026 05:20:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '31', 'Connection': 'close'} 
+ body={"error":"Student not found."}
+ 
+ </msg>
+<msg time="2026-11-18T10:50:25.111221" level="INFO">${missing_records} = &lt;Response [404]&gt;</msg>
+<var>${missing_records}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>/attendance/${student_id}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.108221" elapsed="0.003000"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>404</arg>
+<arg>${missing_records}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-11-18T10:50:25.119220" elapsed="0.000000"/>
+</kw>
+<tag>api</tag>
+<tag>attendance</tag>
+<status status="PASS" start="2026-11-18T10:50:25.025076" elapsed="0.096143"/>
+</test>
+<kw name="Close Attendance API Session" type="TEARDOWN">
+<kw name="Delete All Sessions" owner="RequestsLibrary">
+<msg time="2026-11-18T10:50:25.123219" level="INFO">Deleting All Sessions</msg>
+<doc>Removes all the session objects </doc>
+<status status="PASS" start="2026-11-18T10:50:25.123219" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2026-11-18T10:50:25.122218" elapsed="0.001001"/>
+</kw>
+<status status="PASS" start="2026-11-18T10:50:24.780147" elapsed="0.343072"/>
+</suite>
+<statistics>
+<total>
+<stat pass="9" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="9" fail="0" skip="0">api</stat>
+<stat pass="9" fail="0" skip="0">attendance</stat>
+</tag>
+<suite>
+<stat name="Attendance Tests" id="s1" pass="9" fail="0" skip="0">Attendance Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
