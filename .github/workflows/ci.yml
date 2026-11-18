@@ -4,8 +4,11 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
-  test:
+  test-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -26,9 +29,8 @@ jobs:
         coverage run -m robot --outputdir results tests/attendance_tests.robot
         coverage html
 
-    - name: Upload HTML Report
-      uses: actions/upload-artifact@v3
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        name: coverage-report
-        path: htmlcov/
-        
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./htmlcov
